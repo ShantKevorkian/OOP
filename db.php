@@ -52,7 +52,7 @@
             }
             $condition = substr($condition, 0, -5);
 
-            $query_update = "UPDATE ".$table_name." SET ".$data." WHERE ".$condition."";
+            $query_update = "UPDATE $table_name SET ".$data." WHERE ".$condition."";
             $query_run = $this->conn->query($query_update);
             return $query_run;
         }
@@ -65,7 +65,7 @@
             }
             $condition = substr($condition, 0, -5);
 
-            $query_delete = "DELETE FROM ".$table_name." WHERE ".$condition."";
+            $query_delete = "DELETE FROM $table_name WHERE ".$condition."";
             $query_run = $this->conn->query($query_delete);
             return $query_run;
         }
