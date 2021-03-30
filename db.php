@@ -111,7 +111,7 @@
 	];
     $result_delete = $db->delete('user_reg', $delete_condition);
     if($result_delete) {
-        echo "Data Deleted";
+        echo "Data deleted";
     }
     else {
         echo "error";
