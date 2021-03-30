@@ -92,7 +92,7 @@
 
     // Update test
     $update_data = [
-		"name" => "sako"
+		"name" => "Jake"
 	];
     $update_condition = [
 		"id" => "10"
