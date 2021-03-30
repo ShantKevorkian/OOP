@@ -84,7 +84,7 @@
     ];
     $result_insert = $db->insert('user_reg', $data);
     if($result_insert) {
-        echo "success";
+        echo "New data inserted";
     }
     else {
         echo "error";
@@ -99,7 +99,7 @@
 	];
     $result_update = $db->update('user_reg', $update_data, $update_condition);
     if($result_update) {
-        echo "success";
+        echo "Data updated";
     }
     else {
         echo "error";
@@ -111,7 +111,7 @@
 	];
     $result_delete = $db->delete('user_reg', $delete_condition);
     if($result_delete) {
-        echo "success";
+        echo "Data Deleted";
     }
     else {
         echo "error";
