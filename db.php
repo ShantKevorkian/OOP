@@ -21,14 +21,9 @@
         }
 
         public function select($sql){
-            $test = [];
             $query_select = $this->conn->query($sql);
-            if($query_select->num_rows > 0){
-                while($row = $query_select->fetch_assoc()){
-                    $test[] = $row;
-                }
-                return $test;
-            }
+            $row = $query_select->fetch_all();
+            return $row;
         } 
 
         public function insert($table_name, $data){
