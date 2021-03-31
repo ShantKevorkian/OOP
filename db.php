@@ -46,7 +46,7 @@
             $data = '';
 
             foreach($updated_data as $key => $value) {  
-                $data .= $key . "='".$value."', ";  
+                $data .= $key . "='".$this->conn->real_escape_string(htmlspecialchars($value))."', ";  
             }
             $data = substr($data, 0, -2);
             
