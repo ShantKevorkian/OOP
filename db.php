@@ -39,8 +39,7 @@
             $value_data = substr($value_data, 0, -2);
             $query_insert = "INSERT INTO $table_name (".implode(",", array_keys($data)).") 
                                 VALUES ($value_data)";
-            $query_run = $this->conn->query($query_insert);
-            return $query_run;
+            return $this->conn->query($query_insert);
         }
 
         public function update($table_name, $updated_data){
@@ -55,8 +54,7 @@
             $this->where_condition = '';
 
             $query_update = "UPDATE $table_name SET " . $data . $where;
-            $query_run = $this->conn->query($query_update);
-            return $query_run;
+            return $this->conn->query($query_update);
         }
 
         public function delete($table_name){
@@ -64,8 +62,7 @@
             $this->where_condition = '';
 
             $query_delete = "DELETE FROM $table_name" . $where;
-            $query_run = $this->conn->query($query_delete);
-            return $query_run;
+            return $this->conn->query($query_delete);
         }
 
         public function where($column, $column_value, $oper = '=') {
