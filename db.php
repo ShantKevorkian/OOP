@@ -67,20 +67,20 @@
 
         public function where($column, $column_value, $oper = '=') {
             if($this->where_condition) {
-                $this->where_condition .= " AND ". $column. " " . $oper. " " . "'$column_value'";
+                $this->where_condition .= " AND $column $oper '$column_value' ";
             }
             else {
-                $this->where_condition .= " WHERE " . $column. " " . $oper. " " . "'$column_value'";
+                $this->where_condition .= " WHERE $column $oper '$column_value' ";
             }
             return $this;
         }
 
         public function orWhere($column, $column_value, $oper = '=') {
             if($this->where_condition) {
-                $this->where_condition .= " OR ". $column. " " . $oper. " " . "'$column_value'";
+                $this->where_condition .= " OR $column $oper '$column_value' ";
             }
             else {
-                $this->where_condition .= " WHERE " . $column. " " . $oper. " " . "'$column_value'";
+                $this->where_condition .= " WHERE $column $oper '$column_value' ";
             }
             return $this;
         }
