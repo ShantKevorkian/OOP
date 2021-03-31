@@ -83,56 +83,5 @@
                 $this->where_condition .= " WHERE $column $oper '$column_value' ";
             }
             return $this;
-        }
-            
-    }
-
-    $db = new Db();
-
-    // Select test
-    $result_select = $db->select("SELECT * FROM user_reg");
-
-    // Insert test
-    $data = [
-        "name" => "nazo",
-        "email" => "nazo@gmail.com",
-        "password" => "123"
-    ];
-    $result_insert = $db->insert('user_reg', $data);
-    if($result_insert) {
-        echo "New data inserted";
-    }
-    else {
-        echo "error";
-    }
-
-    // Update tests
-    $update_data = [
-		"name" => "shant"
-	];
-    $update_data_test = [
-		"email" => "shant@gmail.com"
-	];
-    $result_update = $db->where("id", "23")->orWhere("id", "25")->update('user_reg', $update_data);
-    $result_update_test = $db->where("id", "23")->orWhere("id", "25")->update('user_reg', $update_data_test);
-    if($result_update) {
-        echo "Data updated";
-    }
-    else {
-        echo "error";
-    }
-    if($result_update_test) {
-        echo "Data updated";
-    }
-    else {
-        echo "error";
-    }
-
-    // Delete test
-    $result_delete = $db->where("email", "nazo@gmail.com")->where("password", "1%", "LIKE")->delete('user_reg');
-    if($result_delete) {
-        echo "Data deleted";
-    }
-    else {
-        echo "error";
+        }   
     }
