@@ -13,6 +13,10 @@
             }
         }
 
+        function __destruct() {
+		    $this->conn->close();
+	    }
+
         public function select($sql, $all = true){
             $data = [];
             $query_select = $this->conn->query($sql);
