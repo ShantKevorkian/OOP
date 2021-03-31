@@ -3,67 +3,87 @@
     class Db {
         
         private $conn;
-        private $db_host;
-        private $db_user;
-        private $db_pass;
-        private $db_name;
 
-        function __construct() {
-            $this->db_host = "localhost";
-            $this->db_user = "root";
-            $this->db_pass = "";
-            $this->db_name = "internship";
+        private $where_condition = '';
 
-            $this->conn = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
-            if ($this->conn->connect_error) {
+        function __construct($db_host = "localhost", $db_user = "root", $db_pass = "", $db_name = "internship") {
+            $this->conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+            if ($this->conn->connect_errno) {
                 die("Connection failed: " . "<br>" . $this->conn->connect_error);
             }
         }
 
-        public function select($sql){
+        public function select($sql, $all = true){
+            $data = [];
             $query_select = $this->conn->query($sql);
-            $row = $query_select->fetch_all();
-            return $row;
+
+            if(!$all) {
+                $row = $query_select->fetch_assoc();
+                return $row;
+            }
+            while($row = $query_select->fetch_assoc()) {
+                $data[] = $row;
+            }
+            return $data;
         } 
 
         public function insert($table_name, $data){
+            $value_data = '';
+            foreach($data as $key => $value) {  
+                $value_data .="'".$this->conn->real_escape_string(htmlspecialchars($value))."', ";  
+            }
+            $value_data = substr($value_data, 0, -2);
             $query_insert = "INSERT INTO $table_name (".implode(",", array_keys($data)).") 
-                                VALUES ('".implode("','",array_values($data))."')";
+                                VALUES ($value_data)";
             $query_run = $this->conn->query($query_insert);
             return $query_run;
         }
 
-        public function update($table_name, $updated_data, $update_condition){
+        public function update($table_name, $updated_data){
             $data = '';
-            $condition = '';
 
             foreach($updated_data as $key => $value) {  
                 $data .= $key . "='".$value."', ";  
             }
             $data = substr($data, 0, -2);
             
-            foreach($update_condition as $key => $value) {  
-                $condition .= $key . "='".$value."' AND ";
-            }
-            $condition = substr($condition, 0, -5);
+            $where = $this->where_condition;
+            $this->where_condition = '';
 
-            $query_update = "UPDATE $table_name SET ".$data." WHERE ".$condition."";
+            $query_update = "UPDATE $table_name SET " . $data . $where;
             $query_run = $this->conn->query($query_update);
             return $query_run;
         }
 
-        public function delete($table_name, $delete_condition){
-            $condition = '';
+        public function delete($table_name){
+            $where = $this->where_condition;
+            $this->where_condition = '';
 
-            foreach($delete_condition as $key => $value) {  
-                $condition .= $key . "='".$value."' AND "; 
-            }
-            $condition = substr($condition, 0, -5);
-
-            $query_delete = "DELETE FROM $table_name WHERE ".$condition."";
+            $query_delete = "DELETE FROM $table_name" . $where;
             $query_run = $this->conn->query($query_delete);
             return $query_run;
         }
+
+        public function where($column, $column_value, $oper = '=') {
+            if($this->where_condition) {
+                $this->where_condition .= " AND ". $column. " " . $oper. " " . "'$column_value'";
+            }
+            else {
+                $this->where_condition .= " WHERE " . $column. " " . $oper. " " . "'$column_value'";
+            }
+            return $this;
+        }
+
+        public function orWhere($column, $column_value, $oper = '=') {
+            if($this->where_condition) {
+                $this->where_condition .= " OR ". $column. " " . $oper. " " . "'$column_value'";
+            }
+            else {
+                $this->where_condition .= " WHERE " . $column. " " . $oper. " " . "'$column_value'";
+            }
+            return $this;
+        }
+            
     }
 
     $db = new Db();
@@ -73,8 +93,8 @@
 
     // Insert test
     $data = [
-        "name" => "john",
-        "email" => "john@gmail.com",
+        "name" => "nazo",
+        "email" => "nazo@gmail.com",
         "password" => "123"
     ];
     $result_insert = $db->insert('user_reg', $data);
@@ -85,15 +105,22 @@
         echo "error";
     }
 
-    // Update test
+    // Update tests
     $update_data = [
-		"name" => "Jake"
+		"name" => "shant"
 	];
-    $update_condition = [
-		"id" => "10"
+    $update_data_test = [
+		"email" => "shant@gmail.com"
 	];
-    $result_update = $db->update('user_reg', $update_data, $update_condition);
+    $result_update = $db->where("id", "23")->orWhere("id", "25")->update('user_reg', $update_data);
+    $result_update_test = $db->where("id", "23")->orWhere("id", "25")->update('user_reg', $update_data_test);
     if($result_update) {
+        echo "Data updated";
+    }
+    else {
+        echo "error";
+    }
+    if($result_update_test) {
         echo "Data updated";
     }
     else {
@@ -101,10 +128,7 @@
     }
 
     // Delete test
-    $delete_condition = [
-		"id" => "11"
-	];
-    $result_delete = $db->delete('user_reg', $delete_condition);
+    $result_delete = $db->where("email", "nazo@gmail.com")->where("password", "1%", "LIKE")->delete('user_reg');
     if($result_delete) {
         echo "Data deleted";
     }
