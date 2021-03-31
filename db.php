@@ -30,7 +30,7 @@
             $query_insert = "INSERT INTO $table_name (".implode(",", array_keys($data)).") 
                                 VALUES ('".implode("','",array_values($data))."')";
             $query_run = $this->conn->query($query_insert);
-            return $query_insert;
+            return $query_run;
         }
 
         public function update($table_name, $updated_data, $update_condition){
