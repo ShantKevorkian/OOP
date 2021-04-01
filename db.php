@@ -67,7 +67,7 @@
 
         public function where($column, $column_value, $oper = '=') {
             $column_value = $this->conn->real_escape_string(htmlspecialchars($column_value));
-            if($this->where_condition) {
+            if($this->where_condition != '') {
                 $this->where_condition .= " AND $column $oper '$column_value' ";
             }
             else {
@@ -78,7 +78,7 @@
 
         public function orWhere($column, $column_value, $oper = '=') {
             $column_value = $this->conn->real_escape_string(htmlspecialchars($column_value));
-            if($this->where_condition) {
+            if($this->where_condition != '') {
                 $this->where_condition .= " OR $column $oper '$column_value' ";
             }
             else {
