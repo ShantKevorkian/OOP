@@ -18,13 +18,14 @@
 	    }
 
         public function select($sql, $all = true){
-            $data = [];
+
             $query_select = $this->conn->query($sql);
 
             if(!$all) {
                 $row = $query_select->fetch_assoc();
                 return $row;
             }
+            $data = [];
             while($row = $query_select->fetch_assoc()) {
                 $data[] = $row;
             }
