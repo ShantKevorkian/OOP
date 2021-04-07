@@ -13,7 +13,7 @@
 
         public function select($sql, $all = true){
 
-            $query_select = parent::query($sql);
+            $query_select = $this->query($sql);
 
             if(!$all) {
                 $row = $query_select->fetch_assoc();
